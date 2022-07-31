@@ -164,6 +164,9 @@ SV_Accelerate
 */
 cvar_t sv_maxspeed = {"sv_maxspeed", "320", CVAR_NOTIFY | CVAR_SERVERINFO};
 cvar_t sv_accelerate = {"sv_accelerate", "10", CVAR_NONE};
+cvar_t sv_maxdash = {"sv_maxdash", "1220", CVAR_NOTIFY | CVAR_SERVERINFO};
+cvar_t sv_dashaccel = {"sv_dashaccel", "100", CVAR_NONE};
+
 void   SV_Accelerate (float wishspeed, const vec3_t wishdir)
 {
 	int   i;
@@ -313,7 +316,53 @@ void SV_NoclipMove (void)
 		VectorScale (velocity, sv_maxspeed.value, velocity);
 	}
 }
+/*
+======================
+SV_DashMove -- Penguin Mafia
 
+new, Handles dash moves
+======================
+*/
+void SV_DashMove (void)
+{
+	int    i;
+	vec3_t wishvel;
+	float  wishspeed, addspeed, accelspeed;
+	
+	AngleVectors (sv_player->v.v_angle, forward, right, up);
+
+	velocity[0] = forward[0] * cmd.forwardmove + right[0] * cmd.sidemove;
+	velocity[1] = forward[1] * cmd.forwardmove + right[1] * cmd.sidemove;
+	velocity[2] = forward[2] * cmd.forwardmove + right[2] * cmd.sidemove;
+	//velocity[2] += cmd.upmove * 2; // doubled to match running speed
+
+	if (VectorLength (velocity) > sv_maxdash.value)
+	{
+		VectorNormalize (velocity);
+		VectorScale (velocity, sv_maxdash.value, velocity);
+	}
+	for (i = 0; i < 3; i++)
+		wishvel[i] = forward[i] * cmd.forwardmove + right[i] * cmd.sidemove;
+	//
+	// dash acceleration
+	//
+	wishspeed = VectorLength (wishvel);
+
+	if (!wishspeed)
+		return;
+
+	addspeed = wishspeed;
+	if (addspeed <= 0)
+		return;
+
+	VectorNormalize (wishvel);
+	accelspeed = sv_dashaccel.value * wishspeed * host_frametime;
+	if (accelspeed > addspeed)
+		accelspeed = addspeed;
+
+	for (i = 0; i < 3; i++)
+		velocity[i] += accelspeed * wishvel[i];
+}
 /*
 ===================
 SV_AirMove
@@ -354,6 +403,9 @@ void SV_AirMove (void)
 	if (sv_player->v.movetype == MOVETYPE_NOCLIP)
 	{ // noclip
 		VectorCopy (wishvel, velocity);
+	}
+	else if (sv_player->v.movetype == MOVETYPE_DASH){
+		
 	}
 	else if (onground)
 	{
@@ -419,6 +471,9 @@ void SV_ClientThink (void)
 	// johnfitz -- alternate noclip
 	if (sv_player->v.movetype == MOVETYPE_NOCLIP && sv_altnoclip.value)
 		SV_NoclipMove ();
+	else if (sv_player->v.movetype == MOVETYPE_DASH) {
+		SV_DashMove();
+	}
 	else if (sv_player->v.waterlevel >= 2 && sv_player->v.movetype != MOVETYPE_NOCLIP)
 		SV_WaterMove ();
 	else

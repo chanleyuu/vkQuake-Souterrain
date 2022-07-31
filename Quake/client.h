@@ -288,6 +288,10 @@ extern cvar_t cl_pitchspeed;
 extern cvar_t cl_anglespeedkey;
 
 extern cvar_t cl_alwaysrun; // QuakeSpasm
+extern cvar_t cl_dashtime; //Souterrain Dash cvars
+extern cvar_t cl_dashcharges; //Souterrain
+extern cvar_t cl_dashspeed;// Souterrain
+extern cvar_t cl_dashstate;
 
 extern cvar_t cl_autofire;
 

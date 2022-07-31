@@ -15,6 +15,9 @@ Improvements over QuakeSpasm include:
 * Support for custom mod HUDs (from QSS)
 * Support for scriptable particles (from QSS)
 
+In addition, This custom version of VKquake includes..
+- A dash system similar to Doom Eternal
+
 # Installation
 
 ## Windows

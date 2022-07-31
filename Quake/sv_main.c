@@ -1092,6 +1092,8 @@ void SV_Init (void)
 	extern cvar_t sv_stopspeed;
 	extern cvar_t sv_maxspeed;
 	extern cvar_t sv_accelerate;
+	extern cvar_t sv_maxdash;
+	extern cvar_t sv_dashaccel;
 	extern cvar_t sv_idealpitchscale;
 	extern cvar_t sv_aim;
 	extern cvar_t sv_altnoclip; // johnfitz
@@ -1106,6 +1108,8 @@ void SV_Init (void)
 	Cvar_RegisterVariable (&sv_maxspeed);
 	Cvar_SetCallback (&sv_maxspeed, Host_Callback_Notify);
 	Cvar_RegisterVariable (&sv_accelerate);
+	Cvar_RegisterVariable (&sv_maxdash);
+	Cvar_RegisterVariable (&sv_dashaccel);
 	Cvar_RegisterVariable (&sv_idealpitchscale);
 	Cvar_RegisterVariable (&sv_aim);
 	Cvar_RegisterVariable (&sv_nostep);

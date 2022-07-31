@@ -980,6 +980,13 @@ void SV_Physics_Client (edict_t *ent, int num)
 			return;
 		VectorMA (ent->v.origin, host_frametime, ent->v.velocity, ent->v.origin);
 		break;
+		
+	case MOVETYPE_DASH:
+		if (!SV_RunThink (ent))
+			return;
+		SV_CheckStuck (ent);
+		SV_WalkMove (ent);
+		break;
 
 	default:
 		Host_EndGame ("SV_Physics_client: bad movetype %i", (int)ent->v.movetype);

@@ -2,6 +2,7 @@
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
 Copyright (C) 2010-2014 QuakeSpasm developers
+Copyright (C) 2022 Conall Hanley
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -55,8 +56,10 @@ kbutton_t in_left, in_right, in_forward, in_back;
 kbutton_t in_lookup, in_lookdown, in_moveleft, in_moveright;
 kbutton_t in_strafe, in_speed, in_use, in_jump, in_attack;
 kbutton_t in_up, in_down;
+kbutton_t in_dash; //New dash input
 
 int in_impulse;
+
 
 void KeyDown (kbutton_t *b)
 {
@@ -258,7 +261,14 @@ void IN_JumpUp (void)
 {
 	KeyUp (&in_jump);
 }
-
+void IN_DashDown (void) //New dash ability
+{
+	KeyDown (&in_dash);
+}
+void IN_DashUp (void)
+{
+	KeyUp (&in_dash);
+}
 void IN_Impulse (void)
 {
 	in_impulse = atoi (Cmd_Argv (1));
@@ -333,7 +343,13 @@ cvar_t cl_pitchspeed = {"cl_pitchspeed", "150", CVAR_NONE};
 cvar_t cl_anglespeedkey = {"cl_anglespeedkey", "1.5", CVAR_NONE};
 
 cvar_t cl_alwaysrun = {"cl_alwaysrun", "0", CVAR_ARCHIVE}; // QuakeSpasm -- new always run
+cvar_t cl_dashtime = {"cl_dashtime", "20", CVAR_ARCHIVE}; //Conall . NEW! Handles dash duration in times the BaseMove function is called
+//cvar_t cl_dashcharges = {"cl_dashcharges", "2", CVAR_ARCHIVE}; //Amount of dashes that can be held at one time
+//maybe dash charges should be handled by the server
+cvar_t cl_dashstate = {"cl_dashstate", "0.0", CVAR_NONE};
+cvar_t cl_dashspeed = {"cl_dashspeed", "1600", CVAR_ARCHIVE}; //Speed of dashes
 
+float dashclock = cl_dashtime.value; //dash timer
 /*
 ================
 CL_AdjustAngles
@@ -398,6 +414,10 @@ void CL_BaseMove (usercmd_t *cmd)
 	memset (cmd, 0, sizeof (*cmd));
 
 	VectorCopy (cl.viewangles, cmd->viewangles);
+	
+	//Dash variables
+	//int forward = 800 * ((CL_KeyState (&in_forward)) + (CL_KeyState (&in_back) * -1));
+	//int side = 800 * ((CL_KeyState (&in_right)) + (CL_KeyState (&in_left) * -1));
 
 	if (cls.signon != SIGNONS)
 		return;
@@ -425,9 +445,42 @@ void CL_BaseMove (usercmd_t *cmd)
 	//
 	if ((in_speed.state & 1) ^ (cl_alwaysrun.value != 0.0))
 	{
-		cmd->forwardmove *= cl_movespeedkey.value;
-		cmd->sidemove *= cl_movespeedkey.value;
-		cmd->upmove *= cl_movespeedkey.value;
+		cmd->forwardmove *= cl_movespeedkey.value ;
+		cmd->sidemove *= cl_movespeedkey.value ;
+		cmd->upmove *= cl_movespeedkey.value ;
+	}
+	
+	//Dash Functionallity 
+	if ((in_dash.state & 1) && (dashclock == cl_dashtime.value) /*&& (cl_dashcharges.value > 0)*/){
+			//Needs to increase speed for a split second then return to previous speed
+			Cvar_Set ("cl_dashstate", "1.0");
+			cmd->forwardmove += cl_dashspeed.value * CL_KeyState (&in_forward);
+			cmd->forwardmove -= cl_dashspeed.value * CL_KeyState (&in_back);
+			cmd->sidemove += cl_dashspeed.value * CL_KeyState (&in_moveright);
+			cmd->sidemove -= cl_dashspeed.value * CL_KeyState (&in_moveleft);
+			cmd->upmove += cl_dashspeed.value * CL_KeyState (&in_up);
+			cmd->upmove -= cl_dashspeed.value * CL_KeyState (&in_down);
+			dashclock--;
+			Con_Printf ("Dash!\n");
+			//Side dash
+	}
+	else if((dashclock > 0) && (dashclock != cl_dashtime.value)) {
+		dashclock--;
+		cmd->forwardmove += cl_dashspeed.value * CL_KeyState (&in_forward);
+		cmd->forwardmove -= cl_dashspeed.value * CL_KeyState (&in_back);
+		cmd->sidemove += cl_dashspeed.value * CL_KeyState (&in_moveright);
+		cmd->sidemove -= cl_dashspeed.value * CL_KeyState (&in_moveleft);
+		cmd->upmove += cl_dashspeed.value * CL_KeyState (&in_up);
+		cmd->upmove -= cl_dashspeed.value * CL_KeyState (&in_down);
+	}
+	else if(dashclock == 0){
+		Cvar_Set ("cl_dashstate", "0.0");
+		cmd->sidemove += cl_sidespeed.value * CL_KeyState (&in_moveright);
+		cmd->sidemove -= cl_sidespeed.value * CL_KeyState (&in_moveleft);
+		cmd->forwardmove += cl_forwardspeed.value * CL_KeyState (&in_forward);
+		cmd->forwardmove -= cl_backspeed.value * CL_KeyState (&in_back);
+		dashclock = cl_dashtime.value;
+		Con_Printf ("Stop Dash!\n");
 	}
 }
 
@@ -586,4 +639,6 @@ void CL_InitInput (void)
 	Cmd_AddCommand ("-klook", IN_KLookUp);
 	Cmd_AddCommand ("+mlook", IN_MLookDown);
 	Cmd_AddCommand ("-mlook", IN_MLookUp);
+	Cmd_AddCommand ("-dash", IN_DashUp); //Dash commands
+	Cmd_AddCommand ("+dash", IN_DashDown);
 }
