@@ -166,6 +166,7 @@ cvar_t sv_maxspeed = {"sv_maxspeed", "320", CVAR_NOTIFY | CVAR_SERVERINFO};
 cvar_t sv_accelerate = {"sv_accelerate", "10", CVAR_NONE};
 cvar_t sv_maxdash = {"sv_maxdash", "1220", CVAR_NOTIFY | CVAR_SERVERINFO};
 cvar_t sv_dashaccel = {"sv_dashaccel", "100", CVAR_NONE};
+cvar_t sv_dashcharges = {"sv_dashcharges", "2",  CVAR_NOTIFY | CVAR_SERVERINFO};
 
 void   SV_Accelerate (float wishspeed, const vec3_t wishdir)
 {

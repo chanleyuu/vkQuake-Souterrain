@@ -1192,7 +1192,7 @@ void CL_Init (void)
 
 	Cvar_RegisterVariable (&cl_alwaysrun);
 	Cvar_RegisterVariable (&cl_dashtime); //Penguin Mafia -- Dash variables
-	Cvar_RegisterVariable (&cl_dashcharges);
+	//Cvar_RegisterVariable (&cl_dashcharges);
 	Cvar_RegisterVariable (&cl_dashspeed);
 	Cvar_RegisterVariable (&cl_dashstate);
 	
