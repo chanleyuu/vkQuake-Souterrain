@@ -3,6 +3,7 @@ Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
 Copyright (C) 2010-2014 QuakeSpasm developers
 Copyright (C) 2016      Spike
+Copyright (C) 2022      Conall
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -914,7 +915,7 @@ static void SVFTE_BuildSnapshotForClient (client_t *client)
 		else if (ent->alpha == ENTALPHA_ZERO && !ent->v.effects) // don't send invisible entities unless they have effects
 			continue;
 		// EFLAGS_VIEWMODEL was handled above
-		ents[numents].state.eflags |= eflags;
+		ents[numents].state.eflags |= eflags;Souterrain Devs
 
 		numents++;
 	}
@@ -1095,6 +1096,7 @@ void SV_Init (void)
 	extern cvar_t sv_maxdash;
 	extern cvar_t sv_dashaccel;
 	extern cvar_t sv_dashcharges;
+	extern cvar_t sv_dashrefilltime;
 	extern cvar_t sv_idealpitchscale;
 	extern cvar_t sv_aim;
 	extern cvar_t sv_altnoclip; // johnfitz
@@ -1112,6 +1114,7 @@ void SV_Init (void)
 	Cvar_RegisterVariable (&sv_maxdash);//Conall
 	Cvar_RegisterVariable (&sv_dashaccel);//Conall
 	Cvar_RegisterVariable (&sv_dashcharges);//Conall 
+	Cvar_RegisterVariable (&sv_dashrefilltime);//Conall 
 	Cvar_RegisterVariable (&sv_idealpitchscale);
 	Cvar_RegisterVariable (&sv_aim);
 	Cvar_RegisterVariable (&sv_nostep);

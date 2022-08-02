@@ -2,6 +2,7 @@
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
 Copyright (C) 2010-2014 QuakeSpasm developers
+Copyright (C) 2022 The Penguin Mafia
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -167,6 +168,7 @@ cvar_t sv_accelerate = {"sv_accelerate", "10", CVAR_NONE};
 cvar_t sv_maxdash = {"sv_maxdash", "1220", CVAR_NOTIFY | CVAR_SERVERINFO};
 cvar_t sv_dashaccel = {"sv_dashaccel", "100", CVAR_NONE};
 cvar_t sv_dashcharges = {"sv_dashcharges", "2",  CVAR_NOTIFY | CVAR_SERVERINFO};
+cvar_t sv_dashrefilltime = {"sv_dashrefilltime", "5", CVAR_NOTIFY | CVAR_SERVERINFO};
 
 void   SV_Accelerate (float wishspeed, const vec3_t wishdir)
 {
@@ -319,7 +321,7 @@ void SV_NoclipMove (void)
 }
 /*
 ======================
-SV_DashMove -- Penguin Mafia
+SV_DashMove -- The Penguin Mafia
 
 new, Handles dash moves
 ======================
