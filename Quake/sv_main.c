@@ -915,8 +915,8 @@ static void SVFTE_BuildSnapshotForClient (client_t *client)
 		else if (ent->alpha == ENTALPHA_ZERO && !ent->v.effects) // don't send invisible entities unless they have effects
 			continue;
 		// EFLAGS_VIEWMODEL was handled above
-		ents[numents].state.eflags |= eflags;Souterrain Devs
-
+		ents[numents].state.eflags |= eflags;
+		
 		numents++;
 	}
 
