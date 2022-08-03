@@ -1097,6 +1097,7 @@ void SV_Init (void)
 	extern cvar_t sv_dashaccel;
 	extern cvar_t sv_dashcharges;
 	extern cvar_t sv_dashrefilltime;
+	extern cvar_t sv_dashtime;
 	extern cvar_t sv_idealpitchscale;
 	extern cvar_t sv_aim;
 	extern cvar_t sv_altnoclip; // johnfitz
@@ -1115,6 +1116,7 @@ void SV_Init (void)
 	Cvar_RegisterVariable (&sv_dashaccel);//Conall
 	Cvar_RegisterVariable (&sv_dashcharges);//Conall 
 	Cvar_RegisterVariable (&sv_dashrefilltime);//Conall 
+	Cvar_RegisterVariable (&sv_dashtime);
 	Cvar_RegisterVariable (&sv_idealpitchscale);
 	Cvar_RegisterVariable (&sv_aim);
 	Cvar_RegisterVariable (&sv_nostep);

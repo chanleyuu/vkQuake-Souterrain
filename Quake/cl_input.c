@@ -60,6 +60,8 @@ kbutton_t in_dash; //New dash input
 
 int in_impulse;
 float dashclock = 0.0;
+//double dashstarttime;
+//double dashendtime;
 
 void KeyDown (kbutton_t *b)
 {
@@ -346,7 +348,7 @@ cvar_t cl_alwaysrun = {"cl_alwaysrun", "0", CVAR_ARCHIVE}; // QuakeSpasm -- new 
 cvar_t cl_dashtime = {"cl_dashtime", "4", CVAR_ARCHIVE}; //Conall . NEW! Handles dash duration in times the BaseMove function is called
 //cvar_t cl_dashcharges = {"cl_dashcharges", "2", CVAR_ARCHIVE}; //Amount of dashes that can be held at one time
 //maybe dash charges should be handled by the server
-cvar_t cl_dashstate = {"cl_dashstate", "0.0", CVAR_NONE};
+cvar_t cl_dashstate = {"cl_dashstate", "1", CVAR_NONE};//Three states, 0 is dashing, 1 available, 2 not dashing and not available.
 cvar_t cl_dashspeed = {"cl_dashspeed", "1600", CVAR_ARCHIVE}; //Speed of dashes
 
 /*
@@ -450,7 +452,7 @@ void CL_BaseMove (usercmd_t *cmd)
 	}
 	
 	//Dash Functionallity 
-	if ((in_dash.state & 1) && (dashclock == cl_dashtime.value) /*&& (cl_dashcharges.value > 0)*/){
+	if ((in_dash.state & 1) && (cl_dashstate.value == 1) /*&& (cl_dashcharges.value > 0)*/){
 			//Needs to increase speed for a split second then return to previous speed
 			Cvar_Set ("cl_dashstate", "1.0");
 			cmd->forwardmove += cl_dashspeed.value * CL_KeyState (&in_forward);
@@ -459,11 +461,12 @@ void CL_BaseMove (usercmd_t *cmd)
 			cmd->sidemove -= cl_dashspeed.value * CL_KeyState (&in_moveleft);
 			cmd->upmove += cl_dashspeed.value * CL_KeyState (&in_up);
 			cmd->upmove -= cl_dashspeed.value * CL_KeyState (&in_down);
-			dashclock-= 1.0;
+			//dashclock-= 1.0;
+			dashstarttime = realtime;
 			Con_Printf ("Dash!\n");
 			//Side dash
 	}
-	else if((dashclock > 0.0) && (dashclock != cl_dashtime.value)) {
+	else if(cl_dashstate.value == 0) {
 		dashclock-= 1.0;
 		cmd->forwardmove += cl_dashspeed.value * CL_KeyState (&in_forward);
 		cmd->forwardmove -= cl_dashspeed.value * CL_KeyState (&in_back);
@@ -472,13 +475,13 @@ void CL_BaseMove (usercmd_t *cmd)
 		cmd->upmove += cl_dashspeed.value * CL_KeyState (&in_up);
 		cmd->upmove -= cl_dashspeed.value * CL_KeyState (&in_down);
 	}
-	else if(dashclock <= 1.0){
-		Cvar_Set ("cl_dashstate", "0.0");
+	else if(cl_dashstate.value == 2){
+		//Cvar_Set ("cl_dashstate", "0.0");
 		cmd->sidemove += cl_sidespeed.value * CL_KeyState (&in_moveright);
 		cmd->sidemove -= cl_sidespeed.value * CL_KeyState (&in_moveleft);
 		cmd->forwardmove += cl_forwardspeed.value * CL_KeyState (&in_forward);
 		cmd->forwardmove -= cl_backspeed.value * CL_KeyState (&in_back);
-		dashclock = cl_dashtime.value;
+		dashstarttime = 0;
 		Con_Printf ("Stop Dash!\n");
 	}
 }
