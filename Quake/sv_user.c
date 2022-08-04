@@ -168,6 +168,7 @@ cvar_t sv_accelerate = {"sv_accelerate", "10", CVAR_NONE};
 cvar_t sv_maxdash = {"sv_maxdash", "1220", CVAR_NOTIFY | CVAR_SERVERINFO};
 cvar_t sv_dashaccel = {"sv_dashaccel", "100", CVAR_NOTIFY | CVAR_SERVERINFO};
 cvar_t sv_dashtime = {"sv_dashtime", "2",  CVAR_NONE}; //Dash duration
+cvar_t sv_dashcharges = {"sv_dashcharges", "2", CVAR_NOTIFY | CVAR_SERVERINFO};
 cvar_t sv_dashrefilltime = {"sv_dashrefilltime", "5", CVAR_NOTIFY | CVAR_SERVERINFO};
 
 void   SV_Accelerate (float wishspeed, const vec3_t wishdir)
@@ -474,7 +475,7 @@ void SV_ClientThink (void)
 	// johnfitz -- alternate noclip
 	if (sv_player->v.movetype == MOVETYPE_NOCLIP && sv_altnoclip.value)
 		SV_NoclipMove ();
-	else if (sv_player->v.movetype == MOVETYPE_DASH && sv_dashcharges.value > 0) {
+	else if (sv_player->v.movetype == MOVETYPE_DASH) {
 		SV_DashMove();
 		
 	}
