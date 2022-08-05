@@ -337,7 +337,7 @@ void SV_DashMove (void)
 
 	velocity[0] = forward[0] * cmd.forwardmove + right[0] * cmd.sidemove;
 	velocity[1] = forward[1] * cmd.forwardmove + right[1] * cmd.sidemove;
-	velocity[2] = forward[2] * cmd.forwardmove + right[2] * cmd.sidemove;
+	//velocity[2] = forward[2] * cmd.forwardmove + right[2] * cmd.sidemove;
 	velocity[2] += cmd.upmove * 2; // doubled to match running speed
 
 	if (VectorLength (velocity) > sv_maxdash.value)
