@@ -348,7 +348,7 @@ cvar_t cl_alwaysrun = {"cl_alwaysrun", "0", CVAR_ARCHIVE}; // QuakeSpasm -- new 
 cvar_t cl_dashtime = {"cl_dashtime", "4", CVAR_ARCHIVE}; //Conall . NEW! Handles dash duration in times the BaseMove function is called
 //cvar_t cl_dashcharges = {"cl_dashcharges", "2", CVAR_ARCHIVE}; //Amount of dashes that can be held at one time
 //maybe dash charges should be handled by the server
-cvar_t cl_dashstate = {"cl_dashstate", "1", CVAR_NONE};//Three states, 0 is dashing, 1 available, 2 is not available.
+cvar_t cl_dashstate = {"cl_dashstate", "1", CVAR_NONE};//Three states, 0 is dashing, 1 available, 2 is not available. 3 is requesting a dash
 cvar_t cl_dashspeed = {"cl_dashspeed", "1600", CVAR_ARCHIVE}; //Speed of dashes
 
 /*
@@ -452,9 +452,9 @@ void CL_BaseMove (usercmd_t *cmd)
 	}
 	
 	//Dash Functionallity 
-	if ((in_dash.state & 1) && (cl_dashstate.value == 1) /*&& (cl_dashcharges.value > 0)*/){
+	if ((in_dash.state & 3) && (cl_dashstate.value == 1) /*&& (cl_dashcharges.value > 0)*/){
 			//Needs to increase speed for a split second then return to previous speed
-			Cvar_Set ("cl_dashstate", "1.0");
+			Cvar_Set ("cl_dashstate", "0");
 			cmd->forwardmove += cl_dashspeed.value * CL_KeyState (&in_forward);
 			cmd->forwardmove -= cl_dashspeed.value * CL_KeyState (&in_back);
 			cmd->sidemove += cl_dashspeed.value * CL_KeyState (&in_moveright);
@@ -477,6 +477,7 @@ void CL_BaseMove (usercmd_t *cmd)
 	}
 	else if(cl_dashstate.value == 2){
 		//Cvar_Set ("cl_dashstate", "0.0");
+		Cvar_Set ("cl_dashstate", "1");
 		cmd->sidemove += cl_sidespeed.value * CL_KeyState (&in_moveright);
 		cmd->sidemove -= cl_sidespeed.value * CL_KeyState (&in_moveleft);
 		cmd->forwardmove += cl_forwardspeed.value * CL_KeyState (&in_forward);
