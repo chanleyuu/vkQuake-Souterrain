@@ -452,9 +452,9 @@ void CL_BaseMove (usercmd_t *cmd)
 	}
 	
 	//Dash Functionallity 
-	if ((in_dash.state & 3) && (cl_dashstate.value == 1) /*&& (cl_dashcharges.value > 0)*/){
+	if ((in_dash.state & 1) && (cl_dashstate.value == 1) /*&& (cl_dashcharges.value > 0)*/){
 			//Needs to increase speed for a split second then return to previous speed
-			Cvar_Set ("cl_dashstate", "0");
+			Cvar_Set ("cl_dashstate", "3");
 			cmd->forwardmove += cl_dashspeed.value * CL_KeyState (&in_forward);
 			cmd->forwardmove -= cl_dashspeed.value * CL_KeyState (&in_back);
 			cmd->sidemove += cl_dashspeed.value * CL_KeyState (&in_moveright);
@@ -477,7 +477,7 @@ void CL_BaseMove (usercmd_t *cmd)
 	}
 	else if(cl_dashstate.value == 2){
 		//Cvar_Set ("cl_dashstate", "0.0");
-		Cvar_Set ("cl_dashstate", "1");
+		//Cvar_Set ("cl_dashstate", "1");
 		cmd->sidemove += cl_sidespeed.value * CL_KeyState (&in_moveright);
 		cmd->sidemove -= cl_sidespeed.value * CL_KeyState (&in_moveleft);
 		cmd->forwardmove += cl_forwardspeed.value * CL_KeyState (&in_forward);
