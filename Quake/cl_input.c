@@ -59,7 +59,7 @@ kbutton_t in_up, in_down;
 kbutton_t in_dash; //New dash input
 
 int in_impulse;
-float dashclock = 0.0;
+//float dashclock = 0.0;
 //double dashstarttime;
 //double dashendtime;
 
