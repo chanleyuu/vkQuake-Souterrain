@@ -37,6 +37,10 @@ float *angles;
 float *origin;
 float *velocity;
 
+float dash_velocity_0 = 0;
+float dash_velocity_1 = 0;
+float dash_velocity_2 = 0;
+
 qboolean onground;
 
 usercmd_t cmd;
@@ -329,16 +333,24 @@ new, Handles dash moves
 */
 void SV_DashMove (void)
 {
+	//Freeze the user inputs at the start of the dash.
+	if (dash_velocity_0 == 0){
+		dash_velocity_0 = forward[0] * cmd.forwardmove + right[0] * cmd.sidemove;
+		dash_velocity_1 = forward[1] * cmd.forwardmove + right[1] * cmd.sidemove;
+		dash_velocity_2 = forward[2] * cmd.forwardmove + right[2] * cmd.sidemove;
+		dash_velocity_2 += cmd.upmove * 2;
+	}
+	
 	int    i;
 	vec3_t wishvel;
 	float  wishspeed, addspeed, accelspeed;
 	
 	AngleVectors (sv_player->v.v_angle, forward, right, up);
 
-	velocity[0] = forward[0] * cmd.forwardmove + right[0] * cmd.sidemove;
-	velocity[1] = forward[1] * cmd.forwardmove + right[1] * cmd.sidemove;
-	velocity[2] = forward[2] * cmd.forwardmove + right[2] * cmd.sidemove;
-	velocity[2] += cmd.upmove * 2; // doubled to match running speed
+	velocity[0] = dash_velocity_0;
+	velocity[1] = dash_velocity_1;
+	velocity[2] = dash_velocity_2;
+	//velocity[2] += cmd.upmove * 2;
 
 	if (VectorLength (velocity) > sv_maxdash.value)
 	{
@@ -434,6 +446,10 @@ void SV_ClientThink (void)
 {
 	vec3_t v_angle;
 
+	if (sv_player->v.movetype != MOVETYPE_DASH){
+		dash_velocity_0 = 0;
+	}
+	
 	if (sv_player->v.movetype == MOVETYPE_NONE)
 		return;
 
@@ -442,6 +458,7 @@ void SV_ClientThink (void)
 	origin = sv_player->v.origin;
 	velocity = sv_player->v.velocity;
 
+	
 	DropPunchAngle ();
 
 	//
@@ -484,6 +501,7 @@ void SV_ClientThink (void)
 	else
 		SV_AirMove ();
 	// johnfitz
+	
 }
 
 /*
