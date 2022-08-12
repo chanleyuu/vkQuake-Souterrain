@@ -446,9 +446,10 @@ void SV_ClientThink (void)
 {
 	vec3_t v_angle;
 
+	/*
 	if (sv_player->v.movetype != MOVETYPE_DASH){
 		dash_velocity_0 = 0;
-	}
+	} */
 	
 	if (sv_player->v.movetype == MOVETYPE_NONE)
 		return;
@@ -473,14 +474,17 @@ void SV_ClientThink (void)
 	cmd = host_client->cmd;
 	angles = sv_player->v.angles;
 
-	VectorAdd (sv_player->v.v_angle, sv_player->v.punchangle, v_angle);
-	angles[ROLL] = V_CalcRoll (sv_player->v.angles, sv_player->v.velocity) * 4;
-	if (!sv_player->v.fixangle)
-	{
-		angles[PITCH] = -v_angle[PITCH] / 3;
-		angles[YAW] = v_angle[YAW];
+	if (sv_player->v.movetype != MOVETYPE_DASH){
+		dash_velocity_0 = 0;
+		VectorAdd (sv_player->v.v_angle, sv_player->v.punchangle, v_angle);
+		angles[ROLL] = V_CalcRoll (sv_player->v.angles, sv_player->v.velocity) * 4;
+		if (!sv_player->v.fixangle)
+		{
+			angles[PITCH] = -v_angle[PITCH] / 3;
+			angles[YAW] = v_angle[YAW];
+		}
 	}
-
+	
 	if ((int)sv_player->v.flags & FL_WATERJUMP)
 	{
 		SV_WaterJump ();
