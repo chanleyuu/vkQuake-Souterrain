@@ -463,7 +463,7 @@ void CL_BaseMove (usercmd_t *cmd)
 			cmd->upmove -= cl_dashspeed.value * CL_KeyState (&in_down);
 			//dashclock-= 1.0;
 			//dashstarttime = realtime;
-			Con_Printf ("Dash!\n");
+			//Con_Printf ("Dash!\n");
 			//Side dash
 	}
 	else if(cl_dashstate.value == 0) {
@@ -483,7 +483,7 @@ void CL_BaseMove (usercmd_t *cmd)
 		cmd->forwardmove += cl_forwardspeed.value * CL_KeyState (&in_forward);
 		cmd->forwardmove -= cl_backspeed.value * CL_KeyState (&in_back);
 		//dashstarttime = 0;
-		Con_Printf ("Stop Dash!\n");
+		//Con_Printf ("Stop Dash!\n");
 	}
 }
 
