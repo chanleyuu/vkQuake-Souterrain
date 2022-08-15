@@ -2,6 +2,7 @@
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
 Copyright (C) 2010-2014 QuakeSpasm developers
+Copyright (C) 2022 The Penguin Mafia
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -1191,7 +1192,7 @@ void CL_Init (void)
 	Cvar_RegisterVariable (&sensitivity);
 
 	Cvar_RegisterVariable (&cl_alwaysrun);
-	Cvar_RegisterVariable (&cl_dashtime); //Penguin Mafia -- Dash variables
+	//Cvar_RegisterVariable (&cl_dashtime); //The Penguin Mafia -- Dash variables
 	//Cvar_RegisterVariable (&cl_dashcharges);
 	Cvar_RegisterVariable (&cl_dashspeed);
 	Cvar_RegisterVariable (&cl_dashstate);
