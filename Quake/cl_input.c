@@ -345,11 +345,11 @@ cvar_t cl_pitchspeed = {"cl_pitchspeed", "150", CVAR_NONE};
 cvar_t cl_anglespeedkey = {"cl_anglespeedkey", "1.5", CVAR_NONE};
 
 cvar_t cl_alwaysrun = {"cl_alwaysrun", "0", CVAR_ARCHIVE}; // QuakeSpasm -- new always run
-cvar_t cl_dashtime = {"cl_dashtime", "4", CVAR_ARCHIVE}; //Conall . NEW! Handles dash duration in times the BaseMove function is called
+//cvar_t cl_dashtime = {"cl_dashtime", "4", CVAR_ARCHIVE}; //Conall . NEW! Handles dash duration in times the BaseMove function is called
 //cvar_t cl_dashcharges = {"cl_dashcharges", "2", CVAR_ARCHIVE}; //Amount of dashes that can be held at one time
 //maybe dash charges should be handled by the server
 cvar_t cl_dashstate = {"cl_dashstate", "1", CVAR_NONE};//Three states, 0 is dashing, 1 available, 2 is not available. 3 is requesting a dash
-cvar_t cl_dashspeed = {"cl_dashspeed", "1600", CVAR_ARCHIVE}; //Speed of dashes
+cvar_t cl_dashspeed = {"cl_dashspeed", "1820", CVAR_ARCHIVE}; //Speed of dashes
 
 /*
 ================
