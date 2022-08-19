@@ -53,6 +53,7 @@ void SV_CalcStats (client_t *client, int *statsi, float *statsf, const char **st
 	memset (statsf, 0, sizeof (*statsf) * MAX_CL_STATS);
 	memset ((void *)statss, 0, sizeof (*statss) * MAX_CL_STATS);
 	statsf[STAT_HEALTH] = ent->v.health;
+	statsf[STAT_DASHES] = ent->v.dash_flag;
 	statsi[STAT_WEAPON] = SV_ModelIndex (PR_GetString (ent->v.weaponmodel));
 	if ((unsigned int)statsi[STAT_WEAPON] >= client->limit_models)
 		statsi[STAT_WEAPON] = 0;

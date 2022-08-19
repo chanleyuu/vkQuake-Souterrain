@@ -144,6 +144,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define STAT_PUNCHANGLE_X  26 // nq-emu
 #define STAT_PUNCHANGLE_Y  27 // nq-emu
 #define STAT_PUNCHANGLE_Z  28 // nq-emu
+#define STAT_DASHES        29 //For dashing
 
 // stock defines
 //
