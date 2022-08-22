@@ -119,6 +119,7 @@ typedef struct
 	float	armortype;
 	float	armorvalue;
 	float	waterlevel;
+	float	dash_flag;
 	float	watertype;
 	float	ideal_yaw;
 	float	yaw_speed;
