@@ -88,6 +88,7 @@ typedef struct
 	float	nextthink;
 	int	groundentity;
 	float	health;
+	float	dash_flag;
 	float	frags;
 	float	weapon;
 	string_t	weaponmodel;
@@ -119,7 +120,6 @@ typedef struct
 	float	armortype;
 	float	armorvalue;
 	float	waterlevel;
-	float	dash_flag;
 	float	watertype;
 	float	ideal_yaw;
 	float	yaw_speed;
@@ -141,4 +141,4 @@ typedef struct
 	string_t	noise3;
 } entvars_t;
 
-#define PROGHEADER_CRC 5927
+#define PROGHEADER_CRC 19635
