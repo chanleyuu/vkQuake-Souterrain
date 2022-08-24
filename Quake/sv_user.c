@@ -173,7 +173,7 @@ cvar_t sv_maxdash = {"sv_maxdash", "1820", CVAR_NOTIFY | CVAR_SERVERINFO};
 cvar_t sv_dashaccel = {"sv_dashaccel", "500", CVAR_NOTIFY | CVAR_SERVERINFO};
 cvar_t sv_dashtime = {"sv_dashtime", "0.25",  CVAR_NONE}; //Dash duration
 cvar_t sv_dashcharges = {"sv_dashcharges", "2", CVAR_NOTIFY | CVAR_SERVERINFO};
-cvar_t sv_dashrefilltime = {"sv_dashrefilltime", "5", CVAR_NOTIFY | CVAR_SERVERINFO};
+cvar_t sv_dashrefilltime = {"sv_dashrefilltime", "2.5", CVAR_NOTIFY | CVAR_SERVERINFO};
 
 void   SV_Accelerate (float wishspeed, const vec3_t wishdir)
 {
