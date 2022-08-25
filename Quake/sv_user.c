@@ -171,7 +171,7 @@ cvar_t sv_maxspeed = {"sv_maxspeed", "320", CVAR_NOTIFY | CVAR_SERVERINFO};
 cvar_t sv_accelerate = {"sv_accelerate", "10", CVAR_NONE};
 cvar_t sv_maxdash = {"sv_maxdash", "1820", CVAR_NOTIFY | CVAR_SERVERINFO};
 cvar_t sv_dashaccel = {"sv_dashaccel", "500", CVAR_NOTIFY | CVAR_SERVERINFO};
-cvar_t sv_dashtime = {"sv_dashtime", "0.25",  CVAR_NONE}; //Dash duration
+cvar_t sv_dashtime = {"sv_dashtime", "0.05",  CVAR_NONE}; //Dash duration
 cvar_t sv_dashcharges = {"sv_dashcharges", "2", CVAR_NOTIFY | CVAR_SERVERINFO};
 cvar_t sv_dashrefilltime = {"sv_dashrefilltime", "2.5", CVAR_NOTIFY | CVAR_SERVERINFO};
 
