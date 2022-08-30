@@ -1378,8 +1378,10 @@ const char *bindnames[][2] = {
 };
 
 #define NUMCOMMANDS (sizeof (bindnames) / sizeof (bindnames[0]))
+#define MAX_KEYS_ON_SCREEN 19
 
 static int      keys_cursor;
+static int first_key = 0;
 static qboolean bind_grab;
 
 void M_Menu_Keys_f (void)
@@ -1436,6 +1438,7 @@ void M_UnbindCommand (const char *command)
 
 extern qpic_t *pic_up, *pic_down;
 
+
 void M_Keys_Draw (cb_context_t *cbx)
 {
 	int         i, x, y;
@@ -1484,6 +1487,10 @@ void M_Keys_Draw (cb_context_t *cbx)
 		}
 	}
 
+	if ((int)NUMCOMMANDS > MAX_KEYS_ON_SCREEN) {
+		M_DrawScrollbar (cbx, 320, 32 + 8, (float)first_key / (float)((int)NUMCOMMANDS - MAX_KEYS_ON_SCREEN), MAX_KEYS_ON_SCREEN - 2);
+	}
+		
 	if (bind_grab)
 		M_DrawCharacter (cbx, 130, 48 + keys_cursor * 8, '=');
 	else
@@ -1549,6 +1556,8 @@ void M_Keys_Key (int k)
 		M_UnbindCommand (bindnames[keys_cursor][0]);
 		break;
 	}
+	
+	first_key = CLAMP (keys_cursor - (int)NUMCOMMANDS + 1, first_key, keys_cursor);
 }
 
 //=============================================================================
