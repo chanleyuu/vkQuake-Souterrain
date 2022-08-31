@@ -1378,7 +1378,7 @@ const char *bindnames[][2] = {
 };
 
 #define NUMCOMMANDS (sizeof (bindnames) / sizeof (bindnames[0]))
-#define MAX_KEYS_ON_SCREEN 19
+#define MAX_KEYS_ON_SCREEN 18
 
 static int      keys_cursor;
 static int first_key = 0;
@@ -1454,51 +1454,66 @@ void M_Keys_Draw (cb_context_t *cbx)
 	else
 		M_Print (cbx, 18, 32, "Enter to change, backspace to clear");
 
+	int key_index = -first_key * 8;
+	int keys_offset = 0;
+	
+	if (keys_cursor > MAX_KEYS_ON_SCREEN){
+		keys_offset = keys_cursor - MAX_KEYS_ON_SCREEN;
+	}
+	
 	// search for known bindings
-	for (i = 0; i < (int)NUMCOMMANDS; i++)
+	for (i = keys_offset; i < (int)NUMCOMMANDS; i++)
 	{
-		y = 48 + 8 * i;
+ 		y = 48 + 8 * i - (keys_offset * 8);
 
 		M_Print (cbx, 16, y, bindnames[i][1]);
 
 		M_FindKeysForCommand (bindnames[i][0], keys);
 
-		if (keys[0] == -1)
-		{
-			M_Print (cbx, 140, y, "???");
-		}
-		else
-		{
-			name = Key_KeynumToString (keys[0]);
-			M_Print (cbx, 140, y, name);
-			x = strlen (name) * 8;
-			if (keys[1] != -1)
+		if (key_index >= MAX_KEYS_ON_SCREEN)
+			break;
+		
+		if (key_index >= 0) {
+			if (keys[0] == -1)
 			{
-				name = Key_KeynumToString (keys[1]);
-				M_Print (cbx, 140 + x + 8, y, "or");
-				M_Print (cbx, 140 + x + 32, y, name);
-				x = x + 32 + strlen (name) * 8;
-				if (keys[2] != -1)
+				M_Print (cbx, 140, y, "???");
+			}
+			else
+			{
+				name = Key_KeynumToString (keys[0]);
+				M_Print (cbx, 140, y, name);
+				x = strlen (name) * 8;
+				if (keys[1] != -1)
 				{
+					name = Key_KeynumToString (keys[1]);
 					M_Print (cbx, 140 + x + 8, y, "or");
-					M_Print (cbx, 140 + x + 32, y, Key_KeynumToString (keys[2]));
+					M_Print (cbx, 140 + x + 32, y, name);
+					x = x + 32 + strlen (name) * 8;
+					if (keys[2] != -1)
+					{
+						M_Print (cbx, 140 + x + 8, y, "or");
+						M_Print (cbx, 140 + x + 32, y, Key_KeynumToString (keys[2]));
+					}
 				}
 			}
 		}
+		
 	}
 
+		
+	if (bind_grab)
+		M_DrawCharacter (cbx, 130, 48 + keys_cursor * 8 - (keys_offset * 8), '=');
+	else
+		M_DrawCharacter (cbx, 130, 48 + keys_cursor * 8 - (keys_offset * 8), 12 + ((int)(realtime * 4) & 1));
+	
 	if ((int)NUMCOMMANDS > MAX_KEYS_ON_SCREEN) {
 		M_DrawScrollbar (cbx, 320, 32 + 8, (float)first_key / (float)((int)NUMCOMMANDS - MAX_KEYS_ON_SCREEN), MAX_KEYS_ON_SCREEN - 2);
 	}
-		
-	if (bind_grab)
-		M_DrawCharacter (cbx, 130, 48 + keys_cursor * 8, '=');
-	else
-		M_DrawCharacter (cbx, 130, 48 + keys_cursor * 8, 12 + ((int)(realtime * 4) & 1));
 }
 
 void M_Keys_Key (int k)
 {
+	int prev_keys_cursor = keys_cursor;
 	char cmd[80];
 	int  keys[3];
 
@@ -1555,8 +1570,23 @@ void M_Keys_Key (int k)
 		S_LocalSound ("misc/menu2.wav");
 		M_UnbindCommand (bindnames[keys_cursor][0]);
 		break;
+	case K_PGUP:
+		keys_cursor -= MAX_KEYS_ON_SCREEN;
+		first_key = q_max (0, first_key - MAX_KEYS_ON_SCREEN);
+		break;
+
+	case K_PGDN:
+		keys_cursor += MAX_KEYS_ON_SCREEN;
+		first_key = q_min (first_key + MAX_KEYS_ON_SCREEN, (int)NUMCOMMANDS - 1 - MAX_KEYS_ON_SCREEN);
+		break;
 	}
 	
+	keys_cursor = CLAMP (0, keys_cursor, (int)NUMCOMMANDS - 1);
+	if (keys_cursor != prev_keys_cursor)
+	{
+		S_LocalSound ("misc/menu1.wav");
+		prev_keys_cursor = keys_cursor;
+	}
 	first_key = CLAMP (keys_cursor - (int)NUMCOMMANDS + 1, first_key, keys_cursor);
 }
 
