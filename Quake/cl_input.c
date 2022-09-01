@@ -59,9 +59,6 @@ kbutton_t in_up, in_down;
 kbutton_t in_dash; //New dash input
 
 int in_impulse;
-//float dashclock = 0.0;
-//double dashstarttime;
-//double dashendtime;
 
 void KeyDown (kbutton_t *b)
 {

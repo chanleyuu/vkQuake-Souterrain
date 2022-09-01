@@ -1374,7 +1374,8 @@ const char *bindnames[][2] = {
 	{"+back", "backpedal"},       {"+left", "turn left"},        {"+right", "turn right"},      {"+speed", "run"},           {"+moveleft", "step left"},
 	{"+moveright", "step right"}, {"+strafe", "sidestep"},       {"+lookup", "look up"},        {"+lookdown", "look down"},  {"centerview", "center view"},
 	{"+mlook", "mouse look"},     {"+klook", "keyboard look"},   {"+moveup", "swim up"},        {"+movedown", "swim down"},
-	{"+dash", "dash"}
+	{"+dash", "dash"}, {"impulse 1", "Weapon 1"}, {"impulse 2", "Weapon 2"}, {"impulse 3", "Weapon 3"},
+	{"impulse 4", "Weapon 4"} 
 };
 
 #define NUMCOMMANDS (sizeof (bindnames) / sizeof (bindnames[0]))
