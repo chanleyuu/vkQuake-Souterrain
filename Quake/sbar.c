@@ -69,6 +69,7 @@ static int hudtype;
 void Sbar_MiniDeathmatchOverlay (cb_context_t *cbx);
 void Sbar_DeathmatchOverlay (cb_context_t *cbx);
 void M_DrawPic (cb_context_t *cbx, int x, int y, qpic_t *pic);
+void Cmd_display_image (void);
 
 qboolean Sbar_CSQCCommand (void)
 {
@@ -1324,4 +1325,12 @@ void Sbar_FinaleOverlay (cb_context_t *cbx)
 
 	pic = Draw_CachePic ("gfx/finale.lmp");
 	Draw_Pic (cbx, (320 - pic->width) / 2, 16, pic, 1.0f, false); // johnfitz -- stretched menus
+}
+/*
+=================
+Cmd_display_image
+=================
+*/
+void Cmd_display_image (void){
+	
 }
