@@ -1138,3 +1138,39 @@ void SCR_UpdateScreen (qboolean use_tasks)
 
 	in_update_screen = false;
 }
+/*
+=================
+Cmd_display_image
+=================
+*/
+void Cmd_display_image (void){
+	int  i, c, b;
+	char cmd[1024];
+
+	c = Cmd_Argc ();
+
+	if (c < 4)
+	{
+		Con_Printf ("displayimage <image> <locx> <locy> [command] : display an image on the screen\n");
+		return;
+	}
+	p = Cmd_Args ();
+	// remove quotes if present
+	quoted = false;
+	if (*p == '\"')
+	{
+		p++;
+		quoted = true;
+	}
+
+	// copy the rest of the command line
+	cmd[0] = 0;
+	for (i = 2; i < c; i++)
+	{
+		q_strlcat (cmd, Cmd_Argv (i), sizeof (cmd));
+		if (i != (c - 1))
+			q_strlcat (cmd, " ", sizeof (cmd));
+	}
+
+	Draw_Pic (, );
+}

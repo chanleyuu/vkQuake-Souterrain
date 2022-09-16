@@ -1337,7 +1337,7 @@ void Cmd_display_image (void){
 
 	c = Cmd_Argc ();
 
-	if (c != 2 && c != 3)
+	if (c < 4)
 	{
 		Con_Printf ("displayimage <image> <locx> <locy> [command] : display an image on the screen\n");
 		return;
