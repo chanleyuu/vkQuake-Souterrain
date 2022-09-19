@@ -135,6 +135,7 @@ extern jmp_buf screen_error;
 
 void SCR_ScreenShot_f (void);
 
+void Cmd_display_image (void);
 /*
 ===============================================================================
 
@@ -510,6 +511,7 @@ void SCR_Init (void)
 	Cmd_AddCommand ("screenshot", SCR_ScreenShot_f);
 	Cmd_AddCommand ("sizeup", SCR_SizeUp_f);
 	Cmd_AddCommand ("sizedown", SCR_SizeDown_f);
+	Cmd_AddCommand ("displayimage", Cmd_display_image);
 
 	SCR_LoadPics (); // johnfitz
 
@@ -1144,8 +1146,11 @@ Cmd_display_image
 =================
 */
 void Cmd_display_image (void){
+	
+	cb_context_t *cbx = &vulkan_globals.secondary_cb_contexts[CBX_GUI];
+	
 	int  i, c, b;
-	char cmd[1024];
+	char cmd[MAXCMDLINE];
 
 	c = Cmd_Argc ();
 
@@ -1154,23 +1159,7 @@ void Cmd_display_image (void){
 		Con_Printf ("displayimage <image> <locx> <locy> [command] : display an image on the screen\n");
 		return;
 	}
-	p = Cmd_Args ();
-	// remove quotes if present
-	quoted = false;
-	if (*p == '\"')
-	{
-		p++;
-		quoted = true;
-	}
+	
 
-	// copy the rest of the command line
-	cmd[0] = 0;
-	for (i = 2; i < c; i++)
-	{
-		q_strlcat (cmd, Cmd_Argv (i), sizeof (cmd));
-		if (i != (c - 1))
-			q_strlcat (cmd, " ", sizeof (cmd));
-	}
-
-	Draw_Pic (, );
+	Draw_Pic (cbx, Cmd_Argv(2), Cmd_Argv(3), Cmd_Argv(1), 1.0f, false);
 }
