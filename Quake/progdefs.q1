@@ -98,6 +98,7 @@ typedef struct
 	float	ammo_nails;
 	float	ammo_rockets;
 	float	ammo_cells;
+	float	ammo_magnum;
 	float	items;
 	float	takedamage;
 	int	chain;
@@ -141,4 +142,4 @@ typedef struct
 	string_t	noise3;
 } entvars_t;
 
-#define PROGHEADER_CRC 19635
+#define PROGHEADER_CRC 17210
