@@ -1149,9 +1149,11 @@ void Cmd_display_image (void){
 	
 	cb_context_t *cbx = &vulkan_globals.secondary_cb_contexts[CBX_GUI];
 	
-	int  i, c, b;
-	char cmd[MAXCMDLINE];
+	int  c;
+	//char cmd[MAXCMDLINE];
 
+	qpic_t *img_to_draw;
+	img_to_draw = Draw_PicFromWad (Cmd_Argv(1));
 	c = Cmd_Argc ();
 
 	if (c < 4)
@@ -1161,5 +1163,5 @@ void Cmd_display_image (void){
 	}
 	
 
-	Draw_Pic (cbx, Cmd_Argv(2), Cmd_Argv(3), Cmd_Argv(1), 1.0f, false);
+	Draw_Pic (cbx, atoi (Cmd_Argv(2)), atoi (Cmd_Argv(3)), img_to_draw, 1.0f, false);
 }
