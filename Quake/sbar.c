@@ -578,7 +578,7 @@ void Sbar_DrawInventory (cb_context_t *cbx)
 	// weapons
 	for (i = 0; i < 7; i++)
 	{
-		if (cl.items & (IT_SHOTGUN << i))
+		if (cl.items_weapons & (IT_SHOTGUN << i))
 		{
 			time = cl.item_gettime[i];
 			flashon = (int)((cl.time - time) * 10);

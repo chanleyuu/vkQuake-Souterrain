@@ -162,6 +162,7 @@ typedef struct
 	float statsf[MAX_CL_STATS];
 	char *statss[MAX_CL_STATS];
 	int   items;            // inventory bit flags
+	int   items_weapons;
 	float item_gettime[32]; // cl.time of aquiring item, for blinking
 	float faceanimtime;     // use anim frame if cl.time < this
 
